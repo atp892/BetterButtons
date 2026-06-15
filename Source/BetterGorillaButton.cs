@@ -13,6 +13,7 @@ public class BetterGorillaButton : MonoBehaviour
     public Vector3 offset;
     public Color OnButtonPressColor;
     public Color IdleColor;
+    public AudioClip ButtonSound;
     public virtual void Awake() 
     { 
         if (text == null)
@@ -40,8 +41,16 @@ public class BetterGorillaButton : MonoBehaviour
         {
             time = Time.time + Delay;
             OnButtonPress();
-            if (GorillaTagger.Instance.rightHandTriggerCollider == other) GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, false, 0.2f);
-            else GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 0.2f);
+            if (GorillaTagger.Instance.rightHandTriggerCollider == other)
+            {
+                if (ButtonSound != null) GorillaTagger.Instance.offlineVRRig.rightHandPlayer.PlayOneShot(ButtonSound);
+                else GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, false, 0.2f);
+            }
+            else 
+            {
+                if (ButtonSound != null) GorillaTagger.Instance.offlineVRRig.leftHandPlayer.PlayOneShot(ButtonSound);
+                else GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(67, true, 0.2f); 
+            }
         }
     }
 }
